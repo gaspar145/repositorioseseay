@@ -20,6 +20,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
+    "js-file-download": "^0.4.12",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",

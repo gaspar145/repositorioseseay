@@ -29,7 +29,8 @@
                 </template> 
 
         <template v-slot:item.opciones="{ item }">
-          <v-btn :href="item.documento" download >
+          <v-btn @click="descarga(item.documento)" >
+            
              
             <v-icon > cloud_download </v-icon>
           </v-btn>
@@ -50,6 +51,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import FileDownload from "js-file-download";
 export default {
   data() {
     return {
@@ -98,6 +100,20 @@ export default {
         .get("documentos/listDocumentosPrimerForo", configuracion)
         .then(function (response) {
           me.documentos = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    descarga(id) {
+        
+      let header = { Token: this.$store.state.token };
+      let configuracion = { headers: header };
+      axios
+      
+        .get("documentos/descargame/" + id, configuracion)
+        .then(function (response) {
+          FileDownload(response.data, 'report.jpg');
         })
         .catch(function (error) {
           console.log(error);

@@ -70,7 +70,7 @@
                 <v-btn style="margin-left: 2px" small @click="editItem(item)">
                   <v-icon small> cloud_download </v-icon>
                 </v-btn>
-                <v-btn style="margin-left: 2px" small @click="editItem(item)">
+                <v-btn style="margin-left: 2px" small @click="editarDocumento(item)">
                   <v-icon small> edit </v-icon>
                 </v-btn>
               </template>
@@ -129,7 +129,7 @@
                 <v-btn style="margin-left: 2px" small @click="editItem(item)">
                   <v-icon small> cloud_download </v-icon>
                 </v-btn>
-                <v-btn style="margin-left: 2px" small @click="editItem(item)">
+                <v-btn style="margin-left: 2px" small @click="editarDocumento(item)">
                   <v-icon small> edit </v-icon>
                 </v-btn>
               </template>
@@ -188,7 +188,7 @@
                 <v-btn style="margin-left: 2px" small @click="editItem(item)">
                   <v-icon small> cloud_download </v-icon>
                 </v-btn>
-                <v-btn style="margin-left: 2px" small @click="editItem(item)">
+                <v-btn style="margin-left: 2px" small @click="editarDocumento(item)">
                   <v-icon small> edit </v-icon>
                 </v-btn>
               </template>
@@ -271,6 +271,7 @@ import moment from "moment";
 export default {
   data() {
     return {
+      editedIndex: -1,
       formulariodocumentos: 0,
       titulo: "",
       descripcion: "",
@@ -329,7 +330,30 @@ export default {
       let me = this;
       let header = { Token: this.$store.state.token };
       let configuracion = { headers: header };
+      console.log(this.idconsulta);
+      if (this.editedIndex > -1) {
       axios
+        .put(
+          "documentos/update",
+          {
+            _id: this.idconsulta,
+            titulo: this.titulo,
+            descripcion: this.descripcion,
+            repositorio: this.repositorio
+
+            
+          },
+          configuracion
+        )
+        .then(function (response) {
+          me.close();
+          me.listar();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        } else {
+          axios
         .post("documentos/add",formData, configuracion)
         .then(function (response) {
           me.close();
@@ -338,7 +362,21 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+        }
     },
+
+    editarDocumento(item) {
+      this.limpiar();
+      this.idconsulta = item._id;
+      this.titulo = item.titulo;
+      this.descripcion = item.descripcion;
+      this.repositorio = item.repositorio;
+      this.formulariodocumentos = 1;
+      this.editedIndex = 1;
+    },
+
+
+
     listar() {
       let me = this;
       let header = { Token: this.$store.state.token };
@@ -378,6 +416,13 @@ export default {
       this.descripcion = "";
       this.repositorio = "";
     },
+    limpiar() {
+      
+      this.titulo = "";
+      this.descripcion = "";
+      this.repositorio = "";
+    },
+
   },
 };
 </script>

@@ -13,6 +13,7 @@ router.get('/listDocumentos',documentosController.listDocumentos);
 router.get('/listDocumentosPrimerForo',documentosController.listDocumentosPrimerForo);
 router.get('/listDocumentosSegundoForo',documentosController.listDocumentosSegundoForo);
 router.get('/listDocumentosBlindaje',documentosController.listDocumentosBlindaje);
+router.get('/descargame/:id',documentosController.descargame);
 router.put('/update',documentosController.update);
 router.delete('/remove',documentosController.remove);
 router.put('/activate',documentosController.activate);

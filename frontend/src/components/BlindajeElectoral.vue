@@ -15,32 +15,28 @@
         ></v-text-field>
         <v-spacer></v-spacer>
       </v-toolbar>
-        <!-- ....................Tabla de documentos.................... -->
+      <!-- ....................Tabla de documentos.................... -->
       <v-data-table
         :headers="headerDocumentos"
         :items="documentos"
         :search="search"
         class="elevation-1"
-       
       >
-      <template v-slot:item.fecha="{item}">
-                    <div>
-                        <span>{{format_date(item.createdAt)}}</span>
-                    </div>
-                </template> 
+        <template v-slot:item.fecha="{ item }">
+          <div>
+            <span>{{ format_date(item.createdAt) }}</span>
+          </div>
+        </template>
 
         <template v-slot:item.opciones="{ item }">
           <v-btn small @click="descargar(item)">
-            <v-icon > cloud_download </v-icon>
+            <v-icon> cloud_download </v-icon>
           </v-btn>
         </template>
         <template v-slot:no-data>
           <v-btn color="primary" @click="listar()">Resetear</v-btn>
         </template>
       </v-data-table>
-
-      
-
     </v-flex>
   </v-layout>
 </template>
@@ -55,7 +51,7 @@ export default {
     return {
       formulariodocumentos: 0,
       file: "",
-      repositorios : ["Primer Foro", "Segundo Foro","Blindaje Electoral"],
+      repositorios: ["Primer Foro", "Segundo Foro", "Blindaje Electoral"],
       documentos: [],
       headerDocumentos: [
         { text: "Titulo", value: "titulo", sortable: true },
@@ -71,26 +67,24 @@ export default {
     this.listar();
   },
   methods: {
-    
     obetenerImagen2(e) {
       let file = e.target.files[0];
       console.log(file);
       this.file = file;
     },
-    format_date(value){
-         if (value) {
-           moment.locale('es');
-           return moment(String(value)).format('LL')
-          }
-      },
-      format_dateFull(value){
-         if (value) {
-           moment.locale('es');
-           return moment(String(value)).format('LLLL');
-          }
-      },
+    format_date(value) {
+      if (value) {
+        moment.locale("es");
+        return moment(String(value)).format("LL");
+      }
+    },
+    format_dateFull(value) {
+      if (value) {
+        moment.locale("es");
+        return moment(String(value)).format("LLLL");
+      }
+    },
 
-    
     listar() {
       let me = this;
       let header = { Token: this.$store.state.token };
@@ -104,7 +98,6 @@ export default {
           console.log(error);
         });
     },
-
   },
 };
 </script>

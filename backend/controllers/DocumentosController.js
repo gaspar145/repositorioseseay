@@ -8,7 +8,7 @@ import token from '../services/token';
 export default {   
     add: async (req, res, next) => {
         try {
-        req.body.documento = '/documentos/' + req.file.filename;
+        req.body.documento =  req.file.filename;
         const reg = await models.Documentos.create(req.body);
         res.status(200).json(reg);
         console.log(req.file);
@@ -19,6 +19,20 @@ export default {
         next(e);
     }
     },
+    descargame: async (req, res, next) => {
+        res.download(
+            __dirname + "/documentos/" + req.params.id,
+            req.params.id,
+            function (err) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("listo");
+              }
+            }
+          );
+    },
+   
     query: async (req, res, next) => {
         try {
             const reg = await models.Usuario.findOne({ _id: req.query._id });
@@ -91,12 +105,7 @@ export default {
     },
     update: async (req, res, next) => {
         try {
-            let pas = req.body.password;
-            const reg0 = await models.Usuario.findOne({ _id: req.body._id });
-            if (pas != reg0.password) {
-                req.body.password = await bcrypt.hash(req.body.password, 10);
-            }
-            const reg = await models.Usuario.findByIdAndUpdate({ _id: req.body._id }, { rol: req.body.rol, nombre: req.body.nombre, tipo_documento: req.body.tipo_documento, num_documento: req.body.num_documento, direccion: req.body.direccion, telefono: req.body.telefono, email: req.body.email, password: req.body.password });
+            const reg = await models.Documentos.findByIdAndUpdate({ _id: req.body._id },{titulo:req.body.titulo,descripcion:req.body.descripcion,repositorio:req.body.repositorio});
             res.status(200).json(reg);
         } catch (e) {
             res.status(500).send({

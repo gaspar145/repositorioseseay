@@ -32,9 +32,11 @@ const storage = multer.diskStorage({
 app.use(
   multer({
     storage,
-    dest: path.join(__dirname, "publicc/ff"),
   }).single("file")
 );
+
+app.use(express.static('documentos'));
+
 
 app.use("/api", router);
 app.set("port", process.env.PORT || 3000);
